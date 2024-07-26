@@ -9,5 +9,4 @@ dbSync:
   database: "cexplorer"
   password: "v8hlDV0yMAHHlIurYupj"
   maxConnections: 10
-  ssl: true
-network: "local"
+network: "preview"

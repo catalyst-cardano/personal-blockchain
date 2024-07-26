@@ -187,7 +187,18 @@ services:
     ports:
       - "3000:3000"
     environment:
+      - NODE_ENV=development
       - BLOCKFROST_CONFIG_SERVER_LISTEN_ADDRESS=0.0.0.0
+      - BLOCKFROST_CONFIG_SERVER_PORT=3000
+      - BLOCKFROST_CONFIG_SERVER_DEBUG=true
+      - BLOCKFROST_CONFIG_SERVER_PROMETHEUS_METRICS=false
+      - BLOCKFROST_CONFIG_DBSYNC_HOST=postgres
+      - BLOCKFROST_CONFIG_DBSYNC_USER=postgres
+      - BLOCKFROST_CONFIG_DBSYNC_PORT=5432
+      - BLOCKFROST_CONFIG_DBSYNC_DATABASE=cexplorer
+      - BLOCKFROST_CONFIG_DBSYNC_PASSWORD=v8hlDV0yMAHHlIurYupj
+      - BLOCKFROST_CONFIG_DBSYNC_MAX_CONN=10
+      - BLOCKFROST_CONFIG_NETWORK=preview 
     volumes:
       - ./config/block-frost:/app/blockfrost-backend-ryo/config
 secrets:

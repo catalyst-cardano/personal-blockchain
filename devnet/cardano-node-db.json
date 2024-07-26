@@ -6,8 +6,8 @@
   "AlonzoGenesisFile": "genesis-alonzo.json",
   "ConwayGenesisFile": "genesis-conway.json",
 
-  "ByronGenesisHash": "25800a7ec8d5630d734a4ffa9cb0a88124a154b766f8127dba98786e23b42182",
-  "ShelleyGenesisHash": "2316cd0b95b58d22ed5d199233500765792c099e218e24aea00f0d1435a5fe7d",
+  "ByronGenesisHash": "8e29076b7734e138685bf568cb37a61d5c2cdafd2949c96448f2b1996f89c494",
+  "ShelleyGenesisHash": "392eb597668aeda2cf7db626348c812ecdda53366d2cc43c8406bb54de5438a0",
   "AlonzoGenesisHash": "adb2ce1f1dfc7edab0e30c588b9488fa50ab43e341c584a4d5d13c627548fa3b",
   "ConwayGenesisHash": "edb88c7726b2599c0aa5286523c09084bbb03b464f045a26f2049efc773a585b",
 

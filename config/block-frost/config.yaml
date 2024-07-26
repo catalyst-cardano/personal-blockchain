@@ -1,0 +1,13 @@
+server:
+  listenAddress: "localhost"
+  port: 3000
+  debug: true
+dbSync:
+  host: "postgres"
+  port: 5432
+  user: "postgres"
+  database: "cexplorer"
+  password: "v8hlDV0yMAHHlIurYupj"
+  maxConnections: 10
+  ssl: true
+network: "local"

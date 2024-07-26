@@ -1,0 +1,199 @@
+services:
+  cardano-node:
+    image: ghcr.io/intersectmbo/cardano-node:8.9.1
+    container_name: cardano-node
+    volumes:
+      - ./devnet:/devnet
+    environment:
+      - CARDANO_BLOCK_PRODUCER=true
+      - CARDANO_SOCKET_PATH=/devnet/node.socket # used by cardano-node
+      - CARDANO_NODE_SOCKET_PATH=/devnet/node.socket # used by cardano-cli
+    ports:
+      - 3001:3001
+    command:
+      [
+        "run",
+        "--config",
+        "/devnet/cardano-node.json",
+        "--topology",
+        "/devnet/topology.json",
+        "--database-path",
+        "/devnet/db",
+        "--shelley-kes-key",
+        "/devnet/kes.skey",
+        "--shelley-vrf-key",
+        "/devnet/vrf.skey",
+        "--shelley-operational-certificate",
+        "/devnet/opcert.cert",
+        "--byron-delegation-certificate",
+        "/devnet/byron-delegation.cert",
+        "--byron-signing-key",
+        "/devnet/byron-delegate.key",
+        "--host-addr",
+        "0.0.0.0",
+        "--port",
+        "3001"
+      ]
+
+  cardano-wallet:
+    image: cardanofoundation/cardano-wallet:2024.3.1
+    ports:
+      - 8090:8090
+    entrypoint: [ ]
+    volumes:
+      - ./devnet:/devnet
+
+    command: bash -c "
+      $$CMD --testnet /devnet/genesis-byron.json
+      "
+    environment:
+      CMD: "cardano-wallet serve --node-socket /devnet/node.socket --database /wallet-db --listen-address 0.0.0.0"
+      NETWORK:
+    restart: on-failure
+    logging:
+      driver: "json-file"
+      options:
+        compress: "true"
+        max-file: "10"
+        max-size: "50m"
+
+
+  icarus:
+    image: piotrstachyra/icarus:v2023-04-14
+    network_mode: "host"
+    restart: on-failure
+
+  cardano-node-ogmios:
+    image: cardanosolutions/ogmios:v5.5.7-preprod
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "400k"
+        max-file: "20"
+    ports:
+      - ${OGMIOS_PORT:-1337}:1337
+    restart: on-failure
+    depends_on:
+      - cardano-node
+    volumes:
+      - ./devnet:/devnet
+      - ./devnet/db:/db
+    command:
+      [
+        "--node-config",
+        "/devnet/cardano-node.json",
+        "--host",
+        "0.0.0.0",
+        "--node-socket",
+        "/devnet/node.socket"
+      ]
+
+  kupo:
+    image: cardanosolutions/kupo:v2.5.0
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "400k"
+        max-file: "20"
+    depends_on:
+      - cardano-node
+    ports:
+      - ${KUPO_PORT:-1442}:1442
+    command:
+      [
+        "--node-socket",
+        "/devnet/node.socket",
+        "--node-config",
+        "/devnet/cardano-node.json",
+        "--since",
+        "${KUPO_SINCE:-origin}",
+        "--match",
+        "${KUPO_MATCH:-*}",
+        "--workdir",
+        "/db",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "1442"
+      ]
+    volumes:
+      - ./devnet:/devnet
+      - ./kupo-db:/db
+
+  postgres:
+    image: postgres:11.18-alpine
+    environment:
+      - POSTGRES_LOGGING=true
+      - POSTGRES_DB_FILE=/run/secrets/postgres_db
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
+      - POSTGRES_USER_FILE=/run/secrets/postgres_user
+    secrets:
+      - postgres_password
+      - postgres_user
+      - postgres_db
+    ports:
+      - ${POSTGRES_PORT:-6432}:5432
+    depends_on:
+      - cardano-node
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    restart: on-failure
+    healthcheck:
+      # Use pg_isready to check postgres is running. Substitute different
+      # user `postgres` if you've setup differently to config/pgpass-mainnet
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: ${POSTGRES_ARGS:--c maintenance_work_mem=1GB -c max_parallel_maintenance_workers=4}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+
+  cardano-db-sync:
+    image: ghcr.io/intersectmbo/cardano-db-sync:13.1.1.3
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - RESTORE_RECREATE_DB=N
+    depends_on:
+      - cardano-node
+      - postgres
+    secrets:
+      - postgres_password
+      - postgres_user
+      - postgres_db
+    volumes:
+      - ./devnet:/devnet
+      - ./db-sync-data:/var/lib/cexplorer
+    command:
+      [
+        "--socket-path",
+        "/devnet/node.socket",
+        "--config",
+        "/devnet/db-sync-config.json"
+      ]
+    restart: on-failure
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+
+  blockfrost:
+    image: blockfrost/backend-ryo:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - BLOCKFROST_CONFIG_SERVER_LISTEN_ADDRESS=0.0.0.0
+    volumes:
+      - ./config/block-frost:/app/blockfrost-backend-ryo/config
+secrets:
+  postgres_db:
+    file: ./config/secrets/postgres_db
+  postgres_password:
+    file: ./config/secrets/postgres_password
+  postgres_user:
+    file: ./config/secrets/postgres_user

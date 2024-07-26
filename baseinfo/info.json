@@ -1,0 +1,18 @@
+{"Epoch0Nonce": "2316cd0b95b58d22ed5d199233500765792c099e218e24aea00f0d1435a5fe7d", "poolParams": {
+  "8a219b698d3b6e034391ae84cee62f1d76b6fbc45ddfe4e31e0d4b60": {
+    "cost": 0,
+    "margin": 0,
+    "metadata": null,
+    "owners": [],
+    "pledge": 0,
+    "publicKey": "8a219b698d3b6e034391ae84cee62f1d76b6fbc45ddfe4e31e0d4b60",
+    "relays": [],
+    "rewardAccount": {
+      "credential": {
+        "keyHash": "b6ffb20cf821f9286802235841d4348a2c2bafd4f73092b7de6655ea"
+      },
+      "network": "Testnet"
+    },
+    "vrf": "fec17ed60cbf2ec5be3f061fb4de0b6ef1f20947cfbfce5fb2783d12f3f69ff5"
+  }
+}}

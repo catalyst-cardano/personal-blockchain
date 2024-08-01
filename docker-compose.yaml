@@ -64,7 +64,7 @@ services:
     restart: on-failure
 
   cardano-node-ogmios:
-    image: cardanosolutions/ogmios:v5.5.7-preprod
+    image: cardanosolutions/ogmios:v6.0.0
     logging:
       driver: "json-file"
       options:

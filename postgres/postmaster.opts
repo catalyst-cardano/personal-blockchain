@@ -1,1 +1,0 @@
-/usr/local/bin/postgres "-c" "maintenance_work_mem=1GB" "-c" "max_parallel_maintenance_workers=4"

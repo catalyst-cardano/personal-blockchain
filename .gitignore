@@ -1,0 +1,6 @@
+build/baseinfo/
+build/db-sync-data/
+build/devnet/
+build/kupo-db/
+build/postgres/
+.idea/

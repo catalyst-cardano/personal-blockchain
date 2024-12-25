@@ -68,3 +68,4 @@ curl -X POST http://localhost:3000/workspace \
 To create a local blockchain network through the UI, first, follow the instructions to set up the UI service at [link](https://github.com/catalyst-cardano/personal-blockchain/blob/main/src/ui/README.md).
 
 Once the UI service is running, you can create the local blockchain network through the following screen:
+![UI Screenshot]()

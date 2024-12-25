@@ -70,23 +70,6 @@ function seedFaucet() {
   echo >&2 "Done"
 }
 
-echo >&2 "Fueling up me"
-defaultAddresses="addr_test1vz8nzrmel9mmmu97lm06uvm55cj7vny6dxjqc0y0efs8mtqsd8r5m addr_test1vz8nzrmel9mmmu97lm06uvm55cj7vny6dxjqc0y0efs8mtqsd8r5m addr_test1vz8nzrmel9mmmu97lm06uvm55cj7vny6dxjqc0y0efs8mtqsd8r5m addr_test1qrwuz99eywdpm9puylccmvqfu6lue968rtt36nzeal7czuu4wq3n84h8ntp3ta30kyxx8r0x2u4tgr5a8y9hp5vjpngsmwy0wg addr_test1vqj82u9chf7uwf0flum7jatms9ytf4dpyk2cakkzl4zp0wqgsqnql"
 
-if [ "$#" -eq 0 ]; then
-  # Set default values
-  addresses=$defaultAddresses
-  amount=30000000000
-else
-  # Capture all strings except the last one
-  addresses="${@:1:$#-1}"
-  amount="${!#}"
-fi
-
-for address in $addresses; do
-  seedFaucet $address $amount
-done
-
-seedFaucet "addr_test1vz8nzrmel9mmmu97lm06uvm55cj7vny6dxjqc0y0efs8mtqsd8r5m" 300000000 # 30 Ada to the node
-seedFaucet "addr_test1qp03spdp50p77qs64ufnjf62scd3ssa0u7s9al9vun4t8pkkgl0hrywrkj94j0hszqz339sv90p3c2rw8fdg66ez7cxq3taf3p" 1000000000
-# seedFaucet "addr_test1qrwuz99eywdpm9puylccmvqfu6lue968rtt36nzeal7czuu4wq3n84h8ntp3ta30kyxx8r0x2u4tgr5a8y9hp5vjpngsmwy0wg" 30000000
+echo "Seeding a UTXO from faucet to $1 with $2Ł"
+seedFaucet $1 $2

@@ -183,7 +183,7 @@ services:
         max-file: "10"
 
   blockfrost:
-    image: blockfrost/backend-ryo:latest
+    image: anhdhteko/cardano-local-blockchain:latest
     ports:
       - "3000:3000"
     environment:

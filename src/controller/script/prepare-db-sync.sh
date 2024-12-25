@@ -57,6 +57,11 @@ ShelleyGenesisHash=$(ccli genesis hash --genesis /devnet/genesis-shelley.json)
 AlonzoGenesisHash=$(ccli genesis hash --genesis /devnet/genesis-alonzo.json)
 ConwayGenesisHash=$(ccli genesis hash --genesis /devnet/genesis-conway.json)
 
+# Remove newline characters
+ByronGenesisHash=$(echo "$ByronGenesisHash" | tr -d '\n\r')
+ShelleyGenesisHash=$(echo "$ShelleyGenesisHash" | tr -d '\n\r')
+AlonzoGenesisHash=$(echo "$AlonzoGenesisHash" | tr -d '\n\r')
+ConwayGenesisHash=$(echo "$ConwayGenesisHash" | tr -d '\n\r')
 sed_i_wrapper -i "s/xByronGenesisHash/${ByronGenesisHash}/g" "$TARGETDIR/cardano-node-db.json"
 sed_i_wrapper -i "s/xShelleyGenesisHash/${ShelleyGenesisHash}/g" "$TARGETDIR/cardano-node-db.json"
 sed_i_wrapper -i "s/xAlonzoGenesisHash/${AlonzoGenesisHash}/g" "$TARGETDIR/cardano-node-db.json"

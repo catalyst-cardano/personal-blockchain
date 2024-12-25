@@ -1,0 +1,14 @@
+services:
+  controller:
+    image: chien28201/cardano-local-blockchain:latest
+    ports:
+      - "8888:8888"
+      - "3000:3000"
+      - "8090:8090"
+    environment:
+      - NODE_ENV=development
+      - BLOCKFROST=http://host.docker.internal:3000
+      - CARDANO_WALLET=http://host.docker.internal:8090
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    privileged: true

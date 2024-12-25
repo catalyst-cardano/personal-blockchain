@@ -1,6 +1,22 @@
-build/baseinfo/
-build/db-sync-data/
-build/devnet/
-build/kupo-db/
-build/postgres/
+# idea ignore
 .idea/
+*.ipr
+*.iml
+*.iws
+
+.vscode/
+.air.toml
+vendor
+
+# project
+config.yaml
+coverage.cov
+
+**/__debug*
+gen.tool
+
+src/controller/script/baseinfo/
+src/controller/script/db-sync-data/
+src/controller/script/devnet/
+src/controller/script/kupo-db/
+src/controller/script/postgres/

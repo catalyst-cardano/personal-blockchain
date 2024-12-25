@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+
+# Check epoch length, slot length and max transaction size parameters
+if [ "$#" -ne 3 ]; then
+  exit 1
+fi
 #
 # Prepare environment to run the demo cluster, then launches docker-compose demo.
 # If there's already a demo running, bail out.
@@ -27,8 +32,8 @@ fi
 #   exit 1
 # fi
 
-"${SCRIPT_DIR}/prepare-devnet.sh"
-${DOCKER_COMPOSE_CMD} stop cardano-node postgres kupo cardano-node-ogmios
+"${SCRIPT_DIR}/prepare-devnet.sh" "$1" "$2" "$3"
+${DOCKER_COMPOSE_CMD} stop
 ${DOCKER_COMPOSE_CMD} up -d cardano-node postgres kupo cardano-node-ogmios icarus cardano-wallet
 # ${DOCKER_COMPOSE_CMD} --profile cardano-node up -d
 
@@ -52,6 +57,8 @@ for url in "${service_urls[@]}"; do
     fi
   done
 done
+
+
 # Check cardano node
 connected="Connected"
 while true; do
@@ -67,11 +74,10 @@ while true; do
 done
 echo >&2 -e "\n# All services are ready!"
 
-"${SCRIPT_DIR}/seed-devnet.sh"
 ${SUDO} chown "${USER:=$(/usr/bin/id -run)}" "$SCRIPT_DIR/devnet/node.socket"
 
 "${SCRIPT_DIR}/prepare-db-sync.sh"
-${DOCKER_COMPOSE_CMD} stop cardano-db-sync
+#${DOCKER_COMPOSE_CMD} stop cardano-db-sync || true
 ${DOCKER_COMPOSE_CMD} up -d cardano-db-sync blockfrost
 # ${DOCKER_COMPOSE_CMD} --profile cardano-db-sync up -d
 

@@ -1,0 +1,5 @@
+script/baseinfo
+script/db-sync-data
+script/devnet
+script/kupo-db
+script/postgres

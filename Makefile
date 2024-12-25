@@ -1,5 +1,11 @@
 run-cluster:
-	./build/run-docker.sh
+	docker compose up -d
 
 stop-cluster:
-	cd build && docker-compose down
+	docker compose down
+
+run-cluster-manual:
+	./src/controller/script/run-docker.sh $(EPOCHLENGTH) $(SLOTLENGTH) $(MAXTXSIZE)
+
+stop-cluster-manual:
+	cd src/controller/script && docker compose down

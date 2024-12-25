@@ -19,13 +19,22 @@ As described in the High-Level Design (HLD) documentation, we expose the service
 You can use Docker to download the Controller service image. For example, to pull the image, use the following command:
 
 ```bash
-docker pull <controller-service-image>
-docker run <controller-service-image>
+docker pull chien28201/cardano-local-blockchain:latest
+docker run -d \
+  -p 8888:8888 \
+  -p 3000:3000 \
+  -p 8090:8090 \
+  --env NODE_ENV=development \
+  --env BLOCKFROST=http://host.docker.internal:3000 \
+  --env CARDANO_WALLET=http://host.docker.internal:8090 \
+  --add-host "host.docker.internal:host-gateway" \
+  --privileged \
+  chien28201/cardano-local-blockchain:latest
 ```
 To stop the service:
 ```bash
-docker stop <container-id>
-docker remove <container-id>
+docker stop chien28201/cardano-local-blockchain
+docker remove chien28201/cardano-local-blockchain
 ```
 
 Alternatively, you can use the Docker Compose configuration defined in our project. To do this, follow these steps:

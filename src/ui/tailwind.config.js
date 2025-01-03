@@ -1,6 +1,8 @@
 const COLOR = {
   PRIMARY_BLUE: '#1677FF',
-  WHITE: '#FFFFFF'
+  WHITE: '#FFFFFF',
+  RED_ERROR: '#FF7875',
+  SECONDARY_BLUE: '#E6F4FF'
 }
 
 /** @type {import('tailwindcss').Config} */
@@ -9,7 +11,9 @@ module.exports = {
   theme: {
     colors: {
       'primary-blue': COLOR.PRIMARY_BLUE,
-      white: COLOR.WHITE
+      white: COLOR.WHITE,
+      'red-error': COLOR.RED_ERROR,
+      'secondary-blue': COLOR.SECONDARY_BLUE
     },
     extend: {
       borderWidth: {

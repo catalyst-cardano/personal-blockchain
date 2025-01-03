@@ -1,0 +1,18 @@
+.inputLabel {
+    color: #212533;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.section[data-position="right"] {
+    background-color: white;
+    padding-left: 20px;
+    margin-right: 30px;
+
+}
+
+.buttonRoot {
+    font-weight: 400;
+    font-size: 16px;
+    border-radius: 8px;
+}
